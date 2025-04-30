@@ -1,0 +1,19 @@
+# Hugoで生成されるディレクトリ
+public/
+resources/
+.hugo_build.lock
+
+# OS固有のファイル
+.DS_Store
+Thumbs.db
+
+# エディタや一時ファイル
+*~
+*.bak
+*.swp
+
+# 認証ファイル
+credentials.json
+
+# 環境変数
+.env
