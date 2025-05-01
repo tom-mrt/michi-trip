@@ -1,6 +1,7 @@
 import os
 import re
 import unicodedata
+from unidecode import unidecode
 import requests
 import gspread
 import deepl
@@ -21,10 +22,35 @@ DESCRIPTION = 6
 
 
 # === スラグ変換関数 ===
-def slugify(text):
+def slugify(text, fallback_prefix=None, idx=None):
+    """
+    text: 元の駅名
+    fallback_prefix: フォールバック時に使う接頭辞（例: 都道府県名の英字）
+    idx: フォールバック時の識別子（例: 行番号）
+    """
     text = unicodedata.normalize('NFKC', text)
-    text = re.sub(r'[^\w\s-]', '', text)
-    return re.sub(r'[\s_]+', '-', text).lower()
+    
+    # ローマ字化
+    slug = unidecode(text)
+    
+    slug = re.sub(r'[^\w\s-]', '', slug)
+    
+    # スペース/アンダースコアをハイフンに
+    slug = re.sub(r'[\s_]+', '-', slug)
+    
+    # 連続するハイフンを1つにまとめる
+    slug = re.sub(r'-+', '-', slug)
+    
+    slug = slug.strip("-").lower()
+    
+    # 空文字ならフォールバック
+    if not slug:
+        if fallback_prefix and idx is not None:
+            slug = f"{fallback_prefix}-{idx}"
+        else:
+            slug = "station-" + str(idx or 0)
+    
+    return slug
 
 # === DeepL API 英訳関数 ===
 def translate_text(text, target_lang="EN-US"):

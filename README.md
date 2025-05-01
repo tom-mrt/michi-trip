@@ -7,3 +7,28 @@
 「Stop. Snack. Explore.」
 「迷わない道の駅、忘れられない旅へ。」
 
+https://github.com/tom-mrt/michi-stop
+
+
+### ディレクトリ構成
+[dir]  tests/
+[file] .DS_Store
+[dir]  .pytest_cache/
+[dir]  .venv/
+[file] read_gss.py
+[dir]  .git/
+[dir]  content/
+[dir]  themes/
+[dir]  __pycache__/
+[file] config.toml
+[file] .gitignore
+[file] .env
+[file] credentials.json
+[dir]  archetypes/
+[dir]  i18n/
+[dir]  layouts/
+[dir]  static/
+[dir]  assets/
+[dir]  data/
+[file] hugo.toml
+[file] README.md
