@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
+    {{/* Add any global CSS or JS links here */}}
+</head>
+<body>
+    <header>
+        {{/* Basic header, maybe site title */}}
+        <h1><a href="{{ .Site.BaseURL }}">{{ .Site.Title }}</a></h1>
+        {{/* You can add navigation here */}}
+    </header>
+
+    <main>
+        {{/* Content from index.html, single.html etc. will be rendered here */}}
+        {{ block "main" . }}{{ end }}
+    </main>
+
+    <footer>
+        {{/* Basic footer */}}
+        <p>&copy; {{ now.Year }} {{ .Site.Title }}</p>
+    </footer>
+</body>
+</html> 
