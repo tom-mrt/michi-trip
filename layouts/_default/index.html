@@ -1,7 +1,62 @@
-<!-- layouts/index.html -->
-<h1>Welcome to Michi-no-Eki Roadtrip Guide</h1>
-<ul>
-  {{ range .Site.RegularPages }}
-    <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+{{ define "main" }}
+<style>
+  .station-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Adjust minmax for desired card size */
+    gap: 1.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0; /* Add some margin */
+  }
+  .station-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: block; /* Ensure the link fills the card */
+    transition: box-shadow 0.3s ease;
+  }
+  .station-card:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  .station-card img {
+    width: 100%;
+    height: 180px; /* Fixed height for images */
+    object-fit: cover; /* Crop images to fit */
+    display: block;
+  }
+  .station-card-content {
+    padding: 1rem;
+  }
+  .station-card h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.2rem;
+  }
+</style>
+
+<h1>道の駅一覧</h1>
+
+<ul class="station-grid">
+  {{/* Filter pages only from the 'stations' section */}}
+  {{ range where site.RegularPages "Section" "stations" }}
+    <li>
+      <a href="{{ .RelPermalink }}" class="station-card">
+        {{/* Attempt to get the main image specified in front matter */}}
+        {{ $image := .Resources.GetMatch .Params.image }}
+        {{ with $image }}
+          <img src="{{ .RelPermalink }}" alt="{{ $.Title }} メイン画像">
+        {{ else }}
+          {{/* Fallback if no image found or specified */}}
+          <div style="height: 180px; background-color: #eee; display: flex; align-items: center; justify-content: center; color: #aaa;">No Image</div>
+        {{ end }}
+        <div class="station-card-content">
+          <h2>{{ .Title }}</h2>
+          {{/* Optionally add prefecture or address here if needed */}}
+          {{/* <p>{{ .Params.prefecture }} - {{ .Params.address }}</p> */}}
+        </div>
+      </a>
+    </li>
   {{ end }}
 </ul>
+{{ end }} 
