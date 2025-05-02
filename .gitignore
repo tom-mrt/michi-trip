@@ -11,6 +11,11 @@ Thumbs.db
 *~
 *.bak
 *.swp
+*.log
+
+# IDE設定ファイル
+.vscode/
+.idea/
 
 # 認証ファイル
 credentials.json
@@ -25,3 +30,4 @@ __pycache__/
 .pytest_cache/
 .coverage
 htmlcov/
+.venv/
