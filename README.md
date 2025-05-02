@@ -7,6 +7,6 @@
 「Stop. Snack. Explore.」
 「迷わない道の駅、忘れられない旅へ。」
 
-https://github.com/tom-mrt/michi-stop
+https://github.com/tom-mrt/michi-trip
 
 
