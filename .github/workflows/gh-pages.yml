@@ -1,0 +1,29 @@
+name: Deploy Hugo site to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # ← mainブランチに push されたときにビルド実行
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 リポジトリを取得
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Hugo のセットアップ
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.121.0'  # ← 必要に応じて固定
+
+      - name: 🔨 Hugo ビルド
+        run: hugo --minify
+
+      - name: 🚀 GitHub Pages にデプロイ
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          publish_branch: gh-pages
