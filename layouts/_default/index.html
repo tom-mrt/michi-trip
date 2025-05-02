@@ -1,0 +1,7 @@
+<!-- layouts/index.html -->
+<h1>Welcome to Michi-no-Eki Roadtrip Guide</h1>
+<ul>
+  {{ range .Site.RegularPages }}
+    <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+  {{ end }}
+</ul>

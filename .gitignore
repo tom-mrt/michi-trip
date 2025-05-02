@@ -17,3 +17,11 @@ credentials.json
 
 # 環境変数
 .env
+
+# Python / pytest
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.coverage
+htmlcov/

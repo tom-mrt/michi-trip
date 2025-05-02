@@ -1,0 +1,28 @@
+<article>
+    <h1>{{ .Title }}</h1>
+  
+    {{ with .Resources.GetMatch "main.jpg" }}
+      <img src="{{ .RelPermalink }}" alt="{{ $.Title }}" style="max-width:100%; margin-bottom:1rem;">
+    {{ end }}
+  
+    <div class="lead">
+      {{ .Content }}
+    </div>
+  
+    {{ range .Params.sections }}
+      <section style="margin-top: 2rem;">
+        <h2>{{ .title }}</h2>
+        <p>{{ .text }}</p>
+        {{ with $.Resources.GetMatch .image }}
+          <img src="{{ .RelPermalink }}" alt="{{ $.Title }}" style="max-width:100%; margin-top:0.5rem;">
+        {{ end }}
+      </section>
+    {{ end }}
+  
+    {{ with .Params.affiliate.klook }}
+      <p style="margin-top:2rem;">
+        <a href="{{ . }}" class="cta">🚗 Rent a car nearby</a>
+      </p>
+    {{ end }}
+  </article>
+  
