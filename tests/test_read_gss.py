@@ -1,7 +1,11 @@
 import os
 import pytest
 from unittest.mock import patch, MagicMock, mock_open
+from dotenv import load_dotenv # dotenv をインポート
 import read_gss # テスト対象のモジュールをインポート
+
+# .env ファイルを読み込む (テスト実行前に環境変数を設定)
+load_dotenv()
 
 # === テストデータ ===
 MOCK_SHEET_DATA = [
@@ -72,11 +76,21 @@ def test_load_sheet_data(mock_oauth):
     mock_sheet.sheet1 = mock_worksheet
     mock_worksheet.get_all_values.return_value = MOCK_SHEET_DATA
 
-    result = read_gss.load_sheet_data()
+    # 環境変数からテストに使用するIDを取得
+    expected_spreadsheet_id = os.getenv("GOOGLE_SPREADSHEET_ID")
+    # テスト実行環境で .env がない場合に備え、デフォルト値を設定するかエラーにする
+    # ここでは、read_gss.py 側で exit するので、テストでは None でないことだけ確認すれば十分かもしれない
+    assert expected_spreadsheet_id is not None, "テスト実行前に .env に GOOGLE_SPREADSHEET_ID を設定してください。"
+
+    # read_gss.py 側の処理を呼び出す前に、環境変数が設定されているようにする
+    # （load_dotenv() を最初に呼んでいれば通常は不要だが念のため）
+    with patch.dict(os.environ, {"GOOGLE_SPREADSHEET_ID": expected_spreadsheet_id}):
+        result = read_gss.load_sheet_data()
 
     # 各メソッドが期待通りに呼ばれたか確認
     mock_oauth.assert_called_once()
-    mock_gc.open_by_key.assert_called_once_with("1n5c8WqgjAN0U8Q90MUpu9WFCY4pv76F3f3_wlRRzb2k")
+    # モックが環境変数から読み込んだIDで呼ばれたか検証
+    mock_gc.open_by_key.assert_called_once_with(expected_spreadsheet_id)
     mock_worksheet.get_all_values.assert_called_once()
     # 結果が正しいか確認
     assert result == MOCK_SHEET_DATA

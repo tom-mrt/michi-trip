@@ -63,7 +63,20 @@ def translate_text(text, target_lang="EN-US"):
 def load_sheet_data():
     gc = gspread.oauth()
 
-    sheet = gc.open_by_key("1n5c8WqgjAN0U8Q90MUpu9WFCY4pv76F3f3_wlRRzb2k").sheet1
+    # 環境変数からスプレッドシートIDを取得
+    spreadsheet_id = os.getenv("GOOGLE_SPREADSHEET_ID")
+    if not spreadsheet_id:
+        print("エラー: 環境変数 'GOOGLE_SPREADSHEET_ID' が .env ファイルに設定されていません。")
+        exit(1) # エラーでスクリプトを終了
+
+    try:
+        sheet = gc.open_by_key(spreadsheet_id).sheet1
+    except gspread.exceptions.APIError as e:
+        print(f"エラー: スプレッドシートにアクセスできません。IDが正しいか、アクセス権限があるか確認してください。 {e}")
+        exit(1)
+    except gspread.exceptions.SpreadsheetNotFound:
+        print(f"エラー: 指定されたIDのスプレッドシートが見つかりません: {spreadsheet_id}")
+        exit(1)
 
     rows = sheet.get_all_values()
     return rows
